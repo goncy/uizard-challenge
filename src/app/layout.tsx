@@ -1,8 +1,9 @@
 import type {Metadata} from "next";
 
-import "./globals.css";
 import Link from "next/link";
 import {Suspense} from "react";
+
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -35,9 +36,9 @@ function ListItemLoading() {
 async function ListItem({id}: {id: number}) {
   await sleep(Math.random() * 3000);
 
-  const post = await fetch(
-    `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`,
-  ).then((res) => res.json() as Promise<{title: string; url: string; by: string}>);
+  const post = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`, {
+    next: {revalidate: 10},
+  }).then((res) => res.json() as Promise<{title: string; url: string; by: string}>);
 
   return (
     <div className="flex h-[64px] flex-col gap-2">
